@@ -16,4 +16,15 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.on('/').render('welcome')
+Route.get('/', 'JobController.home');
+
+Route.on('/signup').render('auth.signup');
+Route.on('/login').render('auth.login');
+Route.post('/signup', 'UserController.create').validator('CreateUser');
+Route.get('/logout', async ({ auth, response }) => {
+    await auth.logout();
+    return response.redirect('/');
+});
+Route.post('/login', 'UserController.login').validator('LoginUser');
+
+
